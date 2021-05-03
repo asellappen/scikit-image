@@ -56,7 +56,7 @@ def profile_line(image, src, dst, linewidth=1,
     >>> profile_line(img, (2, 1), (2, 4))
     array([1., 1., 2., 2.])
     >>> profile_line(img, (1, 0), (1, 6), cval=4)
-    array([1., 1., 1., 2., 2., 2., 0.])
+    array([1., 1., 1., 2., 2., 2., 2.])
 
     The destination point is included in the profile, in contrast to
     standard numpy indexing.
