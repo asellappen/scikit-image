@@ -10,21 +10,29 @@
 #
 # ----------------------------------------------------------------------------
 
-language: python
-dist: focal
-arch:
-  - amd64
-  - ppc64le
+language : python
 
+arch:
+    - amd64
+    - ppc64le
+    
 python:
-  - 3.7
   - 3.8
 
-install:
-  - pip install -r requirements.txt
-  - pip install pytest
-  - python setup.py install
-  - pip install --no-deps -e .
-script:
-  - python -m pytest scikit-image/
-  
+install : 
+  - set -ex
+  - source tools/github/before_install.sh
+  - set -ex
+  - python setup.py sdist
+  - if [[ $INSTALL_FROM_SDIST != "0" ]]; then
+        pip uninstall cython -y;
+        pip install dist/scikit-image-*.tar.gz;
+    else
+        pip install -vv -e .;
+    fi
+  - pip install  "--pre"  -r requirements/test.txt 
+  - export MPL_DIR=`python -c 'import matplotlib; print(matplotlib.get_configdir())'`
+  - mkdir -p ${MPL_DIR}
+  - touch ${MPL_DIR}/matplotlibrc
+  #- source tools/github/script.sh
+  -  python -m pytest 
